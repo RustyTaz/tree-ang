@@ -1,0 +1,21 @@
+<div>
+  <select [(ngModel)]="selectedField" (change)="onSelectField($event)">
+    <option value="">Выберите поле</option>
+    <option value="enterpriseName">Enterprise Name</option>
+    <option value="vehicleTypeName">Vehicle Type Name</option>
+    <!-- Добавьте другие поля, по которым хотите формировать дерево -->
+  </select>
+</div>
+
+<div *ngIf="treeData.length > 0">
+  <ul>
+    <li *ngFor="let node of treeData">
+      {{ node.name }}
+      <ul>
+        <li *ngFor="let item of node.children">
+          {{ item.name }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
