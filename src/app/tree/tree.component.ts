@@ -1,4 +1,4 @@
-import { Component, Input  } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 interface TreeNode {
   [key: string]: TreeNode | string;
@@ -10,7 +10,7 @@ interface TreeNode {
   styleUrls: ['./tree.component.css']
 })
 export class TreeComponent {
-   @Input() tree: TreeNode | undefined;
+  @Input() tree: TreeNode | undefined;
   public expandedNodes: string[] = [];
 
   get treeKeys(): string[] {
@@ -32,4 +32,5 @@ export class TreeComponent {
   isTreeNode(obj: any): obj is TreeNode {
     return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
   }
+
 }

@@ -1,11 +1,5 @@
 <ul *ngIf="tree">
-  <li
-    *ngFor="let node of treeKeys"
-    [ngClass]="{
-      'has-children': nodeIsExpanded(node),
-      expanded: nodeIsExpanded(node)
-    }"
-  >
+  <li *ngFor="let node of treeKeys">
     <span (click)="toggleNode(node)">
       {{ node }}
     </span>
