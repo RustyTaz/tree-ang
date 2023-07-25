@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+// сервис просто возвращает json 
 @Injectable({
   providedIn: 'root'
 })

@@ -8,7 +8,7 @@ interface TreeNode {
   providedIn: 'root'
 })
 export class TreeService {
-  
+  //метод построения дерева разной глубины в зависимости от входных параметров 
  buildTree(data: any[], fields: string[]): TreeNode {
     const tree: TreeNode = {};
 

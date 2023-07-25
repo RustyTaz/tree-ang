@@ -7,6 +7,8 @@ import { TreeService } from '../tree.service';
   templateUrl: './tree-uni.component.html',
   styleUrls: ['./tree-uni.component.css'],
 })
+
+//Тут я получаю данные и преобразую массив в дерево, далее дерево отправляю в другой компонент 
 export class TreeUniComponent implements OnInit  {
   jsonData: any;
   tree: any; 

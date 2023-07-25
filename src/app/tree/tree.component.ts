@@ -9,6 +9,8 @@ interface TreeNode {
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.css']
 })
+
+// Тут я отображаю рекурсивно полученное дерево + логика открытия закрытия узлов списка 
 export class TreeComponent {
   @Input() tree: TreeNode | undefined;
   public expandedNodes: string[] = [];
