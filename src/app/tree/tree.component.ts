@@ -40,8 +40,32 @@ export class TreeComponent {
     return tree;
   }
 
-  nodeKeys(node: TreeNode | string): string[] {
-    return typeof node === 'object' ? Object.keys(node) : [];
+  // nodeKeys(node: TreeNode | string): string[] {
+  //   return typeof node === 'object' ? Object.keys(node) : [];
+  // }
+
+ isObject(item: any): boolean {
+    return typeof item === 'object' && item !== null;
+  }
+
+  // Method to get the children of a node (key-value pairs) without "expanded" property
+  getNodeChildren(node: any): { key: string; value: any }[] {
+    if (!this.isObject(node)) {
+      return [];
+    }
+
+    return Object.keys(node)
+      .filter((key) => key !== 'expanded') // Exclude "expanded" property from the children
+      .map((key) => ({ key, value: node[key] }));
+  }
+
+  // Method to toggle the node expansion/collapse
+  toggleNode(keyValuePair: { key: string; value: any }): void {
+    const value = keyValuePair.value;
+
+    if (this.isObject(value)) {
+      value.expanded = !value.expanded;
+    }
   }
 }
 

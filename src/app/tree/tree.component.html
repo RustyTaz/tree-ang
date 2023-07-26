@@ -1,4 +1,4 @@
-<ng-template #treeNode let-node>
+<!-- <ng-template #treeNode let-node>
   <ul *ngIf="node">
     <li *ngFor="let key of nodeKeys(node)">
       <div>{{ key }}</div>
@@ -14,4 +14,30 @@
   <ng-container
     *ngTemplateOutlet="treeNode; context: { $implicit: tree }"
   ></ng-container>
+</div> -->
+<div class="tree">
+  <ng-container
+    *ngTemplateOutlet="recursiveTree; context: { node: tree }"
+  ></ng-container>
 </div>
+
+<ng-template #recursiveTree let-node="node">
+  <ul *ngIf="node">
+    <li *ngFor="let keyValuePair of getNodeChildren(node)">
+      <span (click)="toggleNode(keyValuePair)">
+        {{ keyValuePair.key }}
+      </span>
+      <ng-container
+        *ngIf="isObject(keyValuePair.value) && keyValuePair.value.expanded"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            recursiveTree;
+            context: { node: keyValuePair.value }
+          "
+        ></ng-container>
+      </ng-container>
+    </li>
+  </ul>
+</ng-template>
+<!-- {{ keyValuePair.value }} -->
