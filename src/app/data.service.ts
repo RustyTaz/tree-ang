@@ -12114,7 +12114,7 @@ export class DataService {
 
 
   getData(): any {
-    return this.jsonData;
+    return this.jsonData.data.controls.VehiclesControl.objects;
   }
   
 }

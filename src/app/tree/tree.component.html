@@ -5,7 +5,7 @@
     </span>
     <ng-container *ngIf="nodeIsExpanded(node)">
       <ng-container *ngIf="tree[node] as treeNode">
-        <app-tree [tree]="treeNode" *ngIf="isTreeNode(treeNode)"></app-tree>
+        <app-tree [dataTree]="treeNode" *ngIf="isTreeNode(treeNode)"></app-tree>
       </ng-container>
     </ng-container>
   </li>
