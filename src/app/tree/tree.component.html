@@ -1,12 +1,17 @@
-<ul *ngIf="tree">
-  <li *ngFor="let node of treeKeys">
-    <span (click)="toggleNode(node)">
-      {{ node }}
-    </span>
-    <ng-container *ngIf="nodeIsExpanded(node)">
-      <ng-container *ngIf="tree[node] as treeNode">
-        <app-tree [dataTree]="treeNode" *ngIf="isTreeNode(treeNode)"></app-tree>
-      </ng-container>
-    </ng-container>
-  </li>
-</ul>
+<ng-template #treeNode let-node>
+  <ul *ngIf="node">
+    <li *ngFor="let key of nodeKeys(node)">
+      <div>{{ key }}</div>
+      <ng-container
+        *ngTemplateOutlet="treeNode; context: { $implicit: node[key] }"
+      ></ng-container>
+    </li>
+  </ul>
+</ng-template>
+
+<div>
+  <h2>Дерево</h2>
+  <ng-container
+    *ngTemplateOutlet="treeNode; context: { $implicit: tree }"
+  ></ng-container>
+</div>
