@@ -25,8 +25,12 @@
   <ul *ngIf="node">
     <li *ngFor="let keyValuePair of getNodeChildren(node)">
       <span (click)="toggleNode(keyValuePair)">
-        {{ keyValuePair.key }}
+        <ng-container *ngIf="isObject(keyValuePair.value)">
+          <span *ngIf="keyValuePair.value.expanded">&#9660;</span>
+          <span *ngIf="!keyValuePair.value.expanded">&#9658;</span>
+        </ng-container>
       </span>
+      <span>{{ keyValuePair.key }} - {{ keyValuePair.value }}</span>
       <ng-container
         *ngIf="isObject(keyValuePair.value) && keyValuePair.value.expanded"
       >
@@ -40,4 +44,5 @@
     </li>
   </ul>
 </ng-template>
+
 <!-- {{ keyValuePair.value }} -->
