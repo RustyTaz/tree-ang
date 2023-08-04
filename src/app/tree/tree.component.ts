@@ -55,10 +55,35 @@ export class TreeComponent {
   }
 
   toggleNode(keyValuePair: { key: string; value: any }): void {
+    console.log("toogleNode");
+    
     const value = keyValuePair.value;
 
     if (this.isObject(value)) {
       value.expanded = !value.expanded;
     }
   }
+
+  selectedNodes: any[] = [];
+//   isSelected(value: any): boolean {
+//   return this.selectedNodes.includes(value);
+// }
+
+  toggleCheckbox( value: any ){
+    if(!(typeof value === 'number')) return
+    if (this.selectedNodes.includes(value)) {
+      this.selectedNodes = this.selectedNodes.filter(node => node !== value);
+    } else {
+      this.selectedNodes.push(value);
+    }
+    console.log(this.selectedNodes);
+  }
+
+  //   onCheckboxChange(event: any) {
+  //   if (event.target.checked) {
+  //     console.log('Checkbox is checked');
+  //   } else {
+  //     console.log('Checkbox is unchecked');
+  //   }
+  // }
 }

@@ -1,36 +1,18 @@
-<!-- <ng-template #treeNode let-node>
-  <ul *ngIf="node">
-    <li *ngFor="let key of nodeKeys(node)">
-      <div>{{ key }}</div>
-      <ng-container
-        *ngTemplateOutlet="treeNode; context: { $implicit: node[key] }"
-      ></ng-container>
-    </li>
-  </ul>
-</ng-template>
-
-<div>
-  <h2>Дерево</h2>
-  <ng-container
-    *ngTemplateOutlet="treeNode; context: { $implicit: tree }"
-  ></ng-container>
-</div> -->
 <div class="tree">
-  <ng-container
-    *ngTemplateOutlet="recursiveTree; context: { node: tree }"
-  ></ng-container>
+  <tree-item [node]="tree"></tree-item>
 </div>
 
 <ng-template #recursiveTree let-node="node">
-  <ul *ngIf="node">
-    <li *ngFor="let keyValuePair of getNodeChildren(node)">
+  <div *ngIf="node">
+    <div *ngFor="let keyValuePair of getNodeChildren(node)">
       <span (click)="toggleNode(keyValuePair)">
         <ng-container *ngIf="isObject(keyValuePair.value)">
-          <span *ngIf="keyValuePair.value.expanded">&#9660;</span>
-          <span *ngIf="!keyValuePair.value.expanded">&#9658;</span>
+          <span *ngIf="keyValuePair.value.expanded">▼</span>
+          <span *ngIf="!keyValuePair.value.expanded">►</span>
         </ng-container>
       </span>
-      <span>{{ keyValuePair.key }} - {{ keyValuePair.value }}</span>
+      <input type="checkbox" (change)="toggleCheckbox(keyValuePair.value)" />
+      <span>{{ keyValuePair.key }}</span>
       <ng-container
         *ngIf="isObject(keyValuePair.value) && keyValuePair.value.expanded"
       >
@@ -41,8 +23,11 @@
           "
         ></ng-container>
       </ng-container>
-    </li>
-  </ul>
+    </div>
+  </div>
 </ng-template>
-
+<label>
+  <input type="checkbox" (change)="toggleCheckbox(5)" />
+  Checkbox
+</label>
 <!-- {{ keyValuePair.value }} -->

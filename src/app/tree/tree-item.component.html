@@ -1,0 +1,17 @@
+<ul *ngIf="node">
+  <li *ngFor="let keyValuePair of getNodeChildren(node)">
+    <span (click)="toggleNode(keyValuePair)">
+      <ng-container *ngIf="isObject(keyValuePair.value)">
+        <span *ngIf="keyValuePair.value.expanded">▼</span>
+        <span *ngIf="!keyValuePair.value.expanded">►</span>
+      </ng-container>
+    </span>
+    <input type="checkbox" (click)="toggleCheckbox(keyValuePair.value)" />
+    <span>{{ keyValuePair.key }}</span>
+    <ng-container
+      *ngIf="isObject(keyValuePair.value) && keyValuePair.value.expanded"
+    >
+      <tree-item [node]="keyValuePair.value"></tree-item>
+    </ng-container>
+  </li>
+</ul>
