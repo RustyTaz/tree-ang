@@ -1,7 +1,11 @@
 import { Component, Input } from '@angular/core';
 
-interface TreeNode {
-  [key: string]: TreeNode | string;
+export interface TreeNode {
+  id?: number;
+  name: string;
+  checked: boolean;
+  expanded: boolean;
+  submenu: TreeNode[];
 }
 
 @Component({
@@ -10,80 +14,51 @@ interface TreeNode {
   styleUrls: ['./tree.component.css'],
 })
 export class TreeComponent {
-  @Input() dataTree: any;
+  @Input() dataTree!: any[];
 
-  tree: TreeNode | undefined;
+  tree?: TreeNode[];
   fields = ['enterpriseName', 'vehicleTypeName', 'modelName', 'name'];
 
   ngOnInit(): void {
-    this.tree = this.buildTree(this.dataTree, this.fields);
+    this.tree = this.buildTree(this.dataTree);
     console.log(this.tree);
   }
 
-  buildTree(data: any[], fields: string[]): TreeNode {
-    const tree: TreeNode = {};
-
-    data.forEach((item) => {
-      let currentNode = tree;
-
-      fields.forEach((field, index) => {
-        const value = item[field];
-
-        if (!currentNode[value]) {
-          currentNode[value] = index === fields.length - 1 ? item.id : {};
-        }
-
-        currentNode = currentNode[value] as TreeNode;
-      });
-    });
-
-    return tree;
-  }
-
-  isObject(item: any): boolean {
-    return typeof item === 'object' && item !== null;
-  }
-
-  getNodeChildren(node: any): { key: string; value: any }[] {
-    if (!this.isObject(node)) {
-      return [];
+  buildTree(data: any[]) {
+    let i = 0;
+    const _data: TreeNode[] = [];
+    for (; i < data.length; i++) {
+      this.appendElem(_data, data[i], 0);
     }
-
-    return Object.keys(node)
-      .filter((key) => key !== 'expanded')
-      .map((key) => ({ key, value: node[key] }));
+    return _data;
   }
 
-  toggleNode(keyValuePair: { key: string; value: any }): void {
-    console.log("toogleNode");
-    
-    const value = keyValuePair.value;
-
-    if (this.isObject(value)) {
-      value.expanded = !value.expanded;
-    }
-  }
-
-  selectedNodes: any[] = [];
-//   isSelected(value: any): boolean {
-//   return this.selectedNodes.includes(value);
-// }
-
-  toggleCheckbox( value: any ){
-    if(!(typeof value === 'number')) return
-    if (this.selectedNodes.includes(value)) {
-      this.selectedNodes = this.selectedNodes.filter(node => node !== value);
+  /** Рекурсивно возвращает древовидный объект по введенным параметрам */
+  appendElem(out: TreeNode[], data: any, level: number) {
+    const fields = this.fields;
+    const length = fields.length - 1;
+    let name = fields[level];
+    if (level < length) {
+      let groupNode = out.find((item: any) => item.name === data[name]);
+      if (!groupNode) {
+        groupNode = {
+          name: data[name],
+          checked: false,
+          expanded: false,
+          submenu: [],
+        };
+        out.push(groupNode);
+      }
+      this.appendElem(groupNode.submenu, data, ++level);
     } else {
-      this.selectedNodes.push(value);
+      name = String(data['name']);
+      out.push({
+        id: data['id'],
+        name: name == '' ? String(data['id']) : name,
+        checked: false,
+        expanded: false,
+        submenu: [],
+      });
     }
-    console.log(this.selectedNodes);
   }
-
-  //   onCheckboxChange(event: any) {
-  //   if (event.target.checked) {
-  //     console.log('Checkbox is checked');
-  //   } else {
-  //     console.log('Checkbox is unchecked');
-  //   }
-  // }
 }
