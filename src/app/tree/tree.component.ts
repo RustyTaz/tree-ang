@@ -5,6 +5,7 @@ export interface TreeNode {
   name: string;
   checked: boolean;
   expanded: boolean;
+  parent: TreeNode | null;
   submenu: TreeNode[];
 }
 
@@ -24,39 +25,50 @@ export class TreeComponent {
     console.log(this.tree);
   }
 
-  buildTree(data: any[]) {
+  buildTree(data: any[]): TreeNode[] {
     let i = 0;
-    const _data: TreeNode[] = [];
+    const rootNode: TreeNode = {
+      name: 'root',
+      checked: false,
+      expanded: false,
+      parent: null,
+      submenu: [],
+    };
     for (; i < data.length; i++) {
-      this.appendElem(_data, data[i], 0);
+      this.appendElem(rootNode, data[i], 0);
     }
-    return _data;
+    return rootNode.submenu;
   }
 
   /** Рекурсивно возвращает древовидный объект по введенным параметрам */
-  appendElem(out: TreeNode[], data: any, level: number) {
+  appendElem(parentNode: TreeNode, data: any, level: number) {
     const fields = this.fields;
     const length = fields.length - 1;
     let name = fields[level];
+
+    const submenu = parentNode.submenu;
     if (level < length) {
-      let groupNode = out.find((item: any) => item.name === data[name]);
+      /** @TODO Возможно оптимизировать, хотя может и не надо */
+      let groupNode = submenu.find((item: any) => item.name === data[name]);
       if (!groupNode) {
         groupNode = {
           name: data[name],
           checked: false,
           expanded: false,
+          parent: parentNode,
           submenu: [],
         };
-        out.push(groupNode);
+        submenu.push(groupNode);
       }
-      this.appendElem(groupNode.submenu, data, ++level);
+      this.appendElem(groupNode, data, ++level);
     } else {
       name = String(data['name']);
-      out.push({
+      submenu.push({
         id: data['id'],
         name: name == '' ? String(data['id']) : name,
         checked: false,
         expanded: false,
+        parent: parentNode,
         submenu: [],
       });
     }
