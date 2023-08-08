@@ -91,14 +91,29 @@ export class TreeComponent {
       console.log('Reached the root of the tree');
     }
   }
+  checkChildChecked(value: TreeNode, methodType: 'add' | 'remove') {
+    if (value.parent) {
+      if (methodType === 'remove') {
+        if (value.parent.submenu.every((item) => !item.checked)) {
+          value.parent.checked = false;
+        }
+      } else {
+        if (value.parent.submenu.every((item) => item.checked)) {
+          value.parent.checked = true;
+        }
+      }
+    }
+  }
 
   getChildrenNodes(value: TreeNode, checked: boolean) {
     value.checked = checked;
 
     if (value.checked) {
       this.addSelectedNode(value.id);
+      this.checkChildChecked(value, 'add');
     } else {
       this.removeSelectedNode(value.id);
+      this.checkChildChecked(value, 'remove');
     }
 
     if (value.submenu.length > 0) {
