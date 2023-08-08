@@ -81,13 +81,10 @@ export class TreeComponent {
   }
 
   receiveValue(value: TreeNode) {
-    console.log(value);
+    //console.log(value);
     this.getChildrenNodes(value, value.checked);
     this.checkIndeterminate(value);
-    //this.printParentNames(value);
-    console.log(this.selectedNodes);
   }
-  //checkParentsChildrenIsUnCheked
   printParentNames(value: TreeNode) {
     if (value.parent !== null) {
       console.log(value.parent.name);
@@ -96,6 +93,7 @@ export class TreeComponent {
       console.log('Reached the root of the tree');
     }
   }
+
   checkChildChecked(value: TreeNode, methodType: 'add' | 'remove') {
     if (value.parent) {
       if (methodType === 'remove') {
@@ -109,24 +107,34 @@ export class TreeComponent {
       }
     }
   }
+  
   checkIndeterminate(value: TreeNode) {
-    console.log(value.parent);
-
     if (value.parent) {
-      let lengthSelectedSubmenuNodes = value.parent.submenu.filter(
-        (node) => node.checked || node.indeterminate
-      ).length ;
+      let lengthCheckedSubmenuNodes = value.parent.submenu.filter(
+        (node) => node.checked
+      ).length;
+      let lengthIndeterminateubmenuNodes = value.parent.submenu.filter(
+        (node) => node.indeterminate
+      ).length;
       if (
-        lengthSelectedSubmenuNodes > 0 &&
-        lengthSelectedSubmenuNodes != value.parent.submenu.length
+        (lengthCheckedSubmenuNodes > 0 &&
+          lengthCheckedSubmenuNodes != value.parent.submenu.length) ||
+        lengthIndeterminateubmenuNodes
       ) {
+        console.log('if', value.parent);
         value.parent.indeterminate = true;
-      } else if (lengthSelectedSubmenuNodes === value.parent.submenu.length) {
+        // value.parent.checked = false;
+      } else if (lengthCheckedSubmenuNodes === value.parent.submenu.length) {
+        console.log('else if', value.parent);
+        value.parent.indeterminate = false;
+        // value.parent.checked = true;
+      } else {
         value.parent.indeterminate = false;
       }
     }
-    if (value.parent){this.checkIndeterminate(value.parent);}
-    
+    if (value.parent) {
+      this.checkIndeterminate(value.parent);
+    }
   }
 
   getChildrenNodes(value: TreeNode, checked: boolean) {
