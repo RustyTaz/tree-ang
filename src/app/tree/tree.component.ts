@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 export interface TreeNode {
   id?: number;
@@ -19,6 +19,8 @@ export class TreeComponent {
 
   tree?: TreeNode[];
   fields = ['enterpriseName', 'vehicleTypeName', 'modelName', 'name'];
+  selectedNodes: number[] = [];
+  receivedValue: string='';
 
   ngOnInit(): void {
     this.tree = this.buildTree(this.dataTree);
@@ -72,5 +74,41 @@ export class TreeComponent {
         submenu: [],
       });
     }
+  }
+
+   receiveValue(value: TreeNode) {
+    console.log("Получили значение");
+    console.log(value);
+    this.getChildrenNodes(value, value.checked)
+    console.log(this.selectedNodes);
+    
+  }
+
+    getChildrenNodes(value: TreeNode, checked: boolean) {
+    value.checked = checked;
+    
+    if (value.checked) {
+      this.addSelectedNode(value.id)
+    } else {
+     this.removeSelectedNode(value.id)
+    }
+
+    if (value.submenu.length > 0) {
+      for (const childNode of value.submenu) {
+        this.getChildrenNodes(childNode, value.checked);
+      }
+    }
+  }
+
+  addSelectedNode(value?: number){
+      if (value) {
+        this.selectedNodes.push(value);
+      }
+  }
+
+  removeSelectedNode(value?: number){
+    this.selectedNodes = this.selectedNodes.filter(
+          (node) => node !== value
+        );
   }
 }

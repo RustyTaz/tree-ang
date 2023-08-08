@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TreeNode } from './tree.component';
 
 @Component({
@@ -7,20 +7,20 @@ import { TreeNode } from './tree.component';
 })
 export class TreeItemComponent {
   @Input() node?: TreeNode[];
-  selectedNodes: number[]=[];
+  @Output() valueEmitted = new EventEmitter<TreeNode>();
+
+  //selectedNodes: number[] = [];
 
   toggleNode(keyValuePair: TreeNode): void {
     keyValuePair.expanded = !keyValuePair.expanded;
   }
 
   toggleCheckbox(value: TreeNode) {
-     console.log(value);
-    if(!(typeof value.id === 'number')) return
-    if (this.selectedNodes.includes(value.id)) {
-      this.selectedNodes = this.selectedNodes.filter(node => node !== value.id);
-    } else {
-      this.selectedNodes.push(value.id);
-    }
-    console.log(this.selectedNodes);
+    console.log(value); 
+    this.valueEmitted.emit(value);   
+    //console.log("Был имит?");      
+    //this.getChildrenNodes(value, value.checked);
+    //console.log(this.selectedNodes);
   }
+
 }

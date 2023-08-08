@@ -13,7 +13,11 @@
     />
     <span>{{ keyValuePair.name }}</span>
     <ng-container *ngIf="keyValuePair.submenu.length && keyValuePair.expanded">
-      <tree-item [node]="keyValuePair.submenu"></tree-item>
+      <tree-item
+        [node]="keyValuePair.submenu"
+        (valueEmitted)="valueEmitted.emit($event)"
+      ></tree-item>
     </ng-container>
   </li>
 </ul>
+<!-- [indeterminate]="true" -->
