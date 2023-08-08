@@ -16,7 +16,7 @@ export class TreeItemComponent {
   }
 
   toggleCheckbox(value: TreeNode) {
-    console.log(value); 
+    //console.log(value); 
     this.valueEmitted.emit(value);   
     //console.log("Был имит?");      
     //this.getChildrenNodes(value, value.checked);

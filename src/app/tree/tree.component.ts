@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 export interface TreeNode {
   id?: number;
@@ -20,7 +20,7 @@ export class TreeComponent {
   tree?: TreeNode[];
   fields = ['enterpriseName', 'vehicleTypeName', 'modelName', 'name'];
   selectedNodes: number[] = [];
-  receivedValue: string='';
+  receivedValue: string = '';
 
   ngOnInit(): void {
     this.tree = this.buildTree(this.dataTree);
@@ -76,21 +76,29 @@ export class TreeComponent {
     }
   }
 
-   receiveValue(value: TreeNode) {
-    console.log("Получили значение");
+  receiveValue(value: TreeNode) {
     console.log(value);
-    this.getChildrenNodes(value, value.checked)
+    this.getChildrenNodes(value, value.checked);
+    //this.printParentNames(value);
     console.log(this.selectedNodes);
-    
+  }
+  //checkParentsChildrenIsUnCheked
+  printParentNames(value: TreeNode) {
+    if (value.parent !== null) {
+      console.log(value.parent.name);
+      this.printParentNames(value.parent);
+    } else {
+      console.log('Reached the root of the tree');
+    }
   }
 
-    getChildrenNodes(value: TreeNode, checked: boolean) {
+  getChildrenNodes(value: TreeNode, checked: boolean) {
     value.checked = checked;
-    
+
     if (value.checked) {
-      this.addSelectedNode(value.id)
+      this.addSelectedNode(value.id);
     } else {
-     this.removeSelectedNode(value.id)
+      this.removeSelectedNode(value.id);
     }
 
     if (value.submenu.length > 0) {
@@ -100,15 +108,13 @@ export class TreeComponent {
     }
   }
 
-  addSelectedNode(value?: number){
-      if (value) {
-        this.selectedNodes.push(value);
-      }
+  addSelectedNode(value?: number) {
+    if (value) {
+      this.selectedNodes.push(value);
+    }
   }
 
-  removeSelectedNode(value?: number){
-    this.selectedNodes = this.selectedNodes.filter(
-          (node) => node !== value
-        );
+  removeSelectedNode(value?: number) {
+    this.selectedNodes = this.selectedNodes.filter((node) => node !== value);
   }
 }
