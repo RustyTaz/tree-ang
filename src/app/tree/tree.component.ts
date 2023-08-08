@@ -7,6 +7,7 @@ export interface TreeNode {
   expanded: boolean;
   parent: TreeNode | null;
   submenu: TreeNode[];
+  indeterminate: boolean;
 }
 
 @Component({
@@ -35,6 +36,7 @@ export class TreeComponent {
       expanded: false,
       parent: null,
       submenu: [],
+      indeterminate: false,
     };
     for (; i < data.length; i++) {
       this.appendElem(rootNode, data[i], 0);
@@ -59,6 +61,7 @@ export class TreeComponent {
           expanded: false,
           parent: parentNode,
           submenu: [],
+          indeterminate: false,
         };
         submenu.push(groupNode);
       }
@@ -72,6 +75,7 @@ export class TreeComponent {
         expanded: false,
         parent: parentNode,
         submenu: [],
+        indeterminate: false,
       });
     }
   }
@@ -79,6 +83,7 @@ export class TreeComponent {
   receiveValue(value: TreeNode) {
     console.log(value);
     this.getChildrenNodes(value, value.checked);
+    this.checkIndeterminate(value);
     //this.printParentNames(value);
     console.log(this.selectedNodes);
   }
@@ -101,6 +106,23 @@ export class TreeComponent {
         if (value.parent.submenu.every((item) => item.checked)) {
           value.parent.checked = true;
         }
+      }
+    }
+  }
+  checkIndeterminate(value: TreeNode) {
+    console.log(value.parent);
+
+    if (value.parent) {
+      let lengthSelectedSubmenuNodes = value.parent.submenu.filter(
+        (node) => node.checked
+      ).length;
+      if (
+        lengthSelectedSubmenuNodes > 0 &&
+        lengthSelectedSubmenuNodes != value.parent.submenu.length
+      ) {
+        value.parent.indeterminate = true;
+      } else if (lengthSelectedSubmenuNodes === value.parent.submenu.length) {
+        value.parent.indeterminate = false;
       }
     }
   }

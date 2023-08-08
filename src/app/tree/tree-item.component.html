@@ -9,6 +9,7 @@
     <input
       type="checkbox"
       [(ngModel)]="keyValuePair.checked"
+      [indeterminate]="keyValuePair.indeterminate"
       (change)="toggleCheckbox(keyValuePair)"
     />
     <span>{{ keyValuePair.name }}</span>
