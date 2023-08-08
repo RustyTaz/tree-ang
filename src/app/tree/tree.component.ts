@@ -114,8 +114,8 @@ export class TreeComponent {
 
     if (value.parent) {
       let lengthSelectedSubmenuNodes = value.parent.submenu.filter(
-        (node) => node.checked
-      ).length;
+        (node) => node.checked || node.indeterminate
+      ).length ;
       if (
         lengthSelectedSubmenuNodes > 0 &&
         lengthSelectedSubmenuNodes != value.parent.submenu.length
@@ -125,6 +125,8 @@ export class TreeComponent {
         value.parent.indeterminate = false;
       }
     }
+    if (value.parent){this.checkIndeterminate(value.parent);}
+    
   }
 
   getChildrenNodes(value: TreeNode, checked: boolean) {
